@@ -21,7 +21,7 @@
 4. أنشئ مستخدم الإدارة من Authentication → Users ثم انسخ UID. يمكنك السماح بأكثر من مدير بوضع UIDs مفصولة بفاصلة في `ADMIN_UIDS`.
 5. أضف نطاق Cloudflare النهائي إلى Authentication → Settings → Authorized domains.
 6. من Project settings → Cloud Messaging → Web configuration أنشئ Web Push certificate وانسخ المفتاح العام إلى `FIREBASE_VAPID_KEY`.
-7. سجّل تطبيق Android بمعرّف الحزمة `com.cashappsy.webtool`. انسخ Firebase Android app ID مثل `1:123:android:abc` إلى `FIREBASE_ANDROID_APP_ID`. استخدم إعداد تطبيق Android من المشروع نفسه. التطبيق يجلب هذه الإعدادات من الموقع؛ لا يلزم وضع ملف Google Services داخل المستودع.
+7. سجّل تطبيق Android بمعرّف الحزمة `com.cashappsy.webtool`. انسخ Firebase Android app ID مثل `1:123:android:abc` إلى `FIREBASE_ANDROID_APP_ID`. استخدم إعداد تطبيق Android من المشروع نفسه. إعدادات Android العامة موجودة أيضاً في android/app/src/main/res/values/firebase.xml لتهيئة Firebase عند بدء عملية التطبيق في الخلفية. لا يلزم ملف Google Services؛ تغيير مشروع Firebase يتطلب تحديث هذا الملف وإعادة بناء APK.
 8. فعّل Firebase Cloud Messaging API (HTTP v1) للمشروع عند الحاجة.
 9. لإنشاء سر إرسال الدفع، استخدم حساب خدمة للمشروع بصلاحية **Firebase Cloud Messaging API Admin** (`roles/firebasecloudmessaging.admin`). احفظ JSON الخاص به كسر Worker باسم `FCM_SERVICE_ACCOUNT` عبر لوحة Cloudflare أو `wrangler secret put`. لا تضع الملف في Git أو صفحات الويب أو الدردشة. المفاتيح العامة لتطبيق Firebase ليست هذا السر.
 
@@ -84,7 +84,7 @@ npm run deploy
 الملف المبني محليًا: `artifacts/MTN-Guide-debug.apk`، مع SHA-256 في الملف المجاور. هذه نسخة تجريبية موقعة بمفتاح Debug، قابلة للتثبيت المباشر، وليست إصدار متجر إنتاج.
 
 - Android 8.0 فأحدث؛ الهدف Android 15 / SDK 35.
-- يفتح التطبيق مباشرة `https://webtool.eng-ali-m-ibrahim.workers.dev` دون إدخال رابط. النسخة 1.0.2 (versionCode 3) تثبت الرابط وتزيل خيار تغييره؛ المستخدم يدخل باسم حسابه وكلمة المرور فقط.
+- يفتح التطبيق مباشرة `https://webtool.eng-ali-m-ibrahim.workers.dev` دون إدخال رابط. النسخة 1.0.3 (versionCode 4) تثبت الرابط وتزيل خيار تغييره؛ المستخدم يدخل باسم حسابه وكلمة المرور فقط.
 - لا يوجد شريط أدوات أصلي أعلى التطبيق. مركز الإشعارات في واجهة الموقع يتيح تفعيل إشعارات Android. الروابط الخارجية تُفتح عبر تطبيق مناسب.
 - زر «إشعارات» يطلب إذن Android 13+ ويسجّل الجهاز بعد إعداد Firebase Android وAnonymous Auth في المشروع.
 - المحتوى يعرض نسخة الويب المتجاوبة داخل WebView، ويقرأ API نفسه. تصميم الموقع ومحتواه يتغيران تلقائيًا بعد نشرهما؛ تغييرات الأذونات أو الوظائف الأصلية تحتاج APK جديدًا.
@@ -139,3 +139,11 @@ npm run test:integration
 يتطلب إنشاء الحسابات السر **FIREBASE_ADMIN_SERVICE_ACCOUNT**. أنشئ حساب خدمة في مشروع Firebase بصلاحية **Firebase Authentication Admin** (`roles/firebaseauth.admin`)، وأنشئ مفتاح JSON وأضف محتواه مباشرة في Cloudflare → Worker → Settings → Variables and Secrets → Secret بهذا الاسم. سر FCM ذو صلاحية الإشعارات وحدها لا يكفي. لا ترسل المفتاح في الدردشة أو Git. تبقى كلمات المرور لدى Firebase ولا تُخزن في D1 أو سجل التدقيق أو النسخ الاحتياطية.
 
 طبّق `migrations/0002.sql` قبل النشر. `REQUIRE_USER_LOGIN=true` يفرض التحقق في API المحتوى، و`/api/me` يتحقق من اعتماد الحساب وتفعيله. Firebase قد يسمح بإنشاء حساب مباشرة باستخدام API العام، لكنه لن يستطيع قراءة المحتوى دون اعتماده في جدول المستخدمين من CMS. عند تعطيل حساب أو تغيير كلمة مروره ترفض جلساته السابقة الوصول. لا يتم تخزين API المحتوى في Service Worker، ويحتاج المستخدم اتصالاً بالإنترنت للدخول وقراءة المحتوى. الأصول والصور روابط عامة؛ هذا ليس نظام حماية مستندات سرية. الاشتراك الأصلي بإشعارات Android يستخدم هوية جهاز مستقلة؛ تعطيل حساب الويب لا يلغي اشتراك الجهاز المجهول تلقائياً.
+
+## تشخيص الإشعارات
+
+الإصدار Android 1.0.3 يهيئ Firebase من موارد التطبيق العامة حتى عند تشغيل الخدمة في الخلفية، ويعرض نتيجة تسجيل الجهاز داخل مركز الإشعارات. اضغط الجرس → تفعيل إشعارات الجهاز، وامنح الإذن؛ انتظر رسالة «تم تسجيل هذا الهاتف بنجاح». عند الفشل يظهر سبب يتعلق بالإذن أو Anonymous Auth أو رمز FCM أو اتصال API. تطبيقات بلا خدمات Google Play قد لا تدعم FCM.
+
+CMS → الإشعارات يعرض عدد رموز هواتف Android والمتصفحات، وحالات إرسال الإشعارات وأكواد أخطاء FCM دون عرض رموز الأجهزة أو مفاتيح خاصة. «قبله Firebase» لا يثبت عرض الإشعار على الجهاز. إذا لم تكن الأجهزة مسجلة لن يرسل شيء. إذا كان الإشعار قد أُرسل قبل منح إذن النظام فلن يعاد إرساله للرمز نفسه؛ أنشئ إشعاراً جديداً للاختبار. الإشعارات الداخلية وحدها لا تطلب إذن النظام ولا تفعّل الدفع. إرسال Android يستخدم الأولوية HIGH لتقليل التأخير، وتبقى قيود الهاتف والخدمة قائمة.
+
+جدول push_errors يضاف بتهيئة migrations/0001.sql الحالية، وهي قابلة لإعادة التنفيذ. أمر النشر في Cloudflare المهيأ سابقاً يطبّقها قبل النشر. سر FCM يتطلب Firebase Cloud Messaging API Admin ومشروع Firebase مطابقاً وإتاحة HTTP v1 API.

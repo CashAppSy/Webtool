@@ -1,0 +1,6 @@
+<resources>
+    <string name="google_app_id" translatable="false">1:494861665868:android:ffb5f492be789a84c2d6e9</string>
+    <string name="google_api_key" translatable="false">AIzaSyDMGAIrflrq8Gw6gKhoa75OuHsQ06vXd6k</string>
+    <string name="project_id" translatable="false">webtool-73fbd</string>
+    <string name="gcm_defaultSenderId" translatable="false">494861665868</string>
+</resources>

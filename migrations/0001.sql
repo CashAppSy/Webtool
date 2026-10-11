@@ -6,3 +6,5 @@ CREATE TABLE IF NOT EXISTS deliveries (notification_id TEXT NOT NULL, token_hash
 CREATE TABLE IF NOT EXISTS audit (id INTEGER PRIMARY KEY AUTOINCREMENT, actor TEXT NOT NULL, action TEXT NOT NULL, target TEXT NOT NULL, created_at TEXT NOT NULL);
 
 CREATE TABLE IF NOT EXISTS seed_registry(kind TEXT NOT NULL,id TEXT NOT NULL,PRIMARY KEY(kind,id));
+
+CREATE TABLE IF NOT EXISTS push_errors(notification_id TEXT NOT NULL,token_hash TEXT NOT NULL,platform TEXT NOT NULL,code TEXT NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(notification_id,token_hash));
