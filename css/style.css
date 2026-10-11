@@ -8,8 +8,8 @@
   --mtn-yellow-soft: #fff3bf;
   --mtn-black: #000000;
 
-  --font-ar: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
-  --font-en: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-ar: 'Cairo Variable', 'Segoe UI', Tahoma, sans-serif;
+  --font-en: 'Inter Variable', 'Segoe UI', Arial, sans-serif;
 
   --bg: #f4f6fb;
   --bg-gradient: radial-gradient(1200px 500px at 85% -10%, rgba(255, 203, 0, 0.18), transparent 60%);

@@ -5,6 +5,7 @@
   'use strict';
 
   var STORAGE_VIEWS = 'mtn-views';
+  var lastViewed = null;
 
   var state = {
     query: '',
@@ -15,20 +16,21 @@
 
   function lang() { return I18N.currentLang(); }
   function t(key) { return I18N.t(key); }
-  function L(o) { return lang() === 'ar' ? o.title_ar : o.title_en; }
-  function S(o) { return lang() === 'ar' ? o.summary_ar : o.summary_en; }
-  function D(o) { return lang() === 'ar' ? o.description_ar : o.description_en; }
-  function Steps(o) { return lang() === 'ar' ? o.steps_ar : o.steps_en; }
+  function L(o) { return (lang() === 'ar' ? o.title_ar : o.title_en) || o.title_ar || o.title_en || ''; }
+  function S(o) { return (lang() === 'ar' ? o.summary_ar : o.summary_en) || o.summary_ar || ''; }
+  function D(o) { return (lang() === 'ar' ? o.description_ar : o.description_en) || o.description_ar || ''; }
+  function Steps(o) { return (lang() === 'ar' ? o.steps_ar : o.steps_en) || o.steps_ar || []; }
+  function inCategory(s, id) { return (s.categories || [s.category]).indexOf(id) !== -1; }
 
   function getCategory(id) {
     return CATEGORIES.find(function (c) { return c.id === id; });
   }
   function catLabel(cat) {
     if (!cat) return '';
-    return lang() === 'ar' ? cat.title_ar : cat.title_en;
+    return (lang() === 'ar' ? cat.title_ar : cat.title_en) || cat.title_ar || '';
   }
   function catIcon(cat) {
-    return cat ? cat.icon : '📦';
+    return cat ? escapeHtml(cat.icon || '📦') : '📦';
   }
 
   function slugify(text) {
@@ -81,7 +83,7 @@
     url = String(url).trim();
 
     // Local file
-    if (/\.(mp4|webm|ogg|ogv)$/i.test(url)) {
+    if (/\.(mp4|webm|ogg|ogv)(?:[?#].*)?$/i.test(url)) {
       return { type: 'file', src: url };
     }
 
@@ -115,8 +117,7 @@
         '<source src="' + escapeHtml(v.src) + '">' +
         '</video></div>';
     }
-    return '<div class="video-wrap">' +
-      '<iframe src="' + escapeHtml(v.src) + '" frameborder="0" allowfullscreen loading="lazy"></iframe></div>';
+    return '<a class="btn btn-outline" href="' + escapeHtml(v.src) + '" target="_blank" rel="noopener noreferrer">' + (lang() === 'ar' ? 'مشاهدة الفيديو ↗' : 'Watch video ↗') + '</a>';
   }
 
   /* ---------- Sidebar (categories) ---------- */
@@ -132,9 +133,9 @@
       '</button>';
 
     CATEGORIES.forEach(function (c) {
-      var count = SERVICES_DATA.filter(function (s) { return s.category === c.id; }).length;
-      html += '<button class="cat-item' + (state.category === c.id ? ' active' : '') + '" data-cat="' + c.id + '">' +
-        '<span class="cat-icon">' + c.icon + '</span><span class="cat-name">' + catLabel(c) + '</span>' +
+      var count = SERVICES_DATA.filter(function (s) { return inCategory(s, c.id); }).length;
+      html += '<button class="cat-item' + (state.category === c.id ? ' active' : '') + '" data-cat="' + escapeHtml(c.id) + '">' +
+        '<span class="cat-icon">' + escapeHtml(c.icon) + '</span><span class="cat-name">' + escapeHtml(catLabel(c)) + '</span>' +
         '<span class="cat-count">' + count + '</span>' +
         '</button>';
     });
@@ -171,8 +172,8 @@
     html += '<button class="mobile-chip' + (!state.category ? ' active' : '') + '" data-cat="">جميع الخدمات</button>';
 
     CATEGORIES.forEach(function (c) {
-      html += '<button class="mobile-chip' + (state.category === c.id ? ' active' : '') + '" data-cat="' + c.id + '">' +
-        c.icon + ' ' + catLabel(c) + '</button>';
+      html += '<button class="mobile-chip' + (state.category === c.id ? ' active' : '') + '" data-cat="' + escapeHtml(c.id) + '">' +
+        c.icon + ' ' + escapeHtml(catLabel(c)) + '</button>';
     });
 
     chips.innerHTML = html;
@@ -204,15 +205,15 @@
 
   function serviceCard(svc) {
     var views = viewCount(svc.id);
-    var href = '#/service/' + svc.id;
-    return '<a class="svc-card" href="' + href + '" data-slug="' + svc.id + '">' +
+    var href = '#/service/' + encodeURIComponent(svc.id);
+    return '<a class="svc-card" href="' + escapeHtml(href) + '" data-slug="' + escapeHtml(svc.id) + '">' +
       '<div class="svc-card-top">' +
-        '<span class="svc-icon">' + svc.icon + '</span>' +
+        '<span class="svc-icon">' + escapeHtml(svc.icon || '📄') + '</span>' +
       '</div>' +
       '<h3 class="svc-title">' + escapeHtml(L(svc)) + '</h3>' +
       '<p class="svc-summary">' + escapeHtml(S(svc)) + '</p>' +
       '<div class="svc-foot">' +
-        '<span class="svc-cat">' + catIcon(getCategory(svc.category)) + ' ' + catLabel(getCategory(svc.category)) + '</span>' +
+        '<span class="svc-cat">' + catIcon(getCategory(svc.category)) + ' ' + escapeHtml(catLabel(getCategory(svc.category))) + '</span>' +
         '<span class="svc-views" title="' + t('viewsLabel') + '">👁 ' + views + '</span>' +
       '</div>' +
     '</a>';
@@ -222,7 +223,7 @@
 
   function homeView() {
     var list = SERVICES_DATA.filter(function (s) {
-      if (state.category && s.category !== state.category) return false;
+      if (state.category && !inCategory(s, state.category)) return false;
       return matchesQuery(s);
     }).slice();
 
@@ -233,15 +234,15 @@
 
     var html = '';
 
-    html += '<section class="hero">' +
-      '<div class="hero-emoji">📚</div>' +
-      '<h1 class="hero-title">' + t('homePageTitle') + '</h1>' +
-      '<p class="hero-tagline">' + t('homeTagline') + '</p>' +
-      (state.query
-        ? '<p class="hero-search-info">› ' + escapeHtml(state.query) + '</p>'
-        : '') +
-    '</section>';
-
+    var settings = window.SITE_CONTENT.settings || {};
+    if (settings.heroEnabled !== false) html += '<section class="hero knowledge-hero">' +
+      '<div class="hero-copy"><span class="hero-label">MTN SYRIA · KNOWLEDGE HUB</span>' +
+      '<h1 class="hero-title">' + escapeHtml((lang() === 'ar' ? settings.title_ar : settings.title_en) || t('homePageTitle')) + '</h1>' +
+      '<p class="hero-tagline">' + escapeHtml((lang() === 'ar' ? settings.subtitle_ar : settings.subtitle_en) || t('homeTagline')) + '</p>' +
+      '<button class="hero-search" id="heroSearch">⌕ <span>' + t('searchPlaceholder') + '</span><kbd>Ctrl K</kbd></button></div>' +
+      '<div class="hero-motif" aria-hidden="true"><span>MTN</span><small>Learn. Explore. Grow.</small></div></section>';
+    html += '<div class="overview-stats"><div><strong>' + SERVICES_DATA.length + '</strong><span>' + (lang() === 'ar' ? 'خدمة في دليلك' : 'Services to explore') + '</span></div><div><strong>' + CATEGORIES.length + '</strong><span>' + (lang() === 'ar' ? 'تصنيفات منظمة' : 'Organized categories') + '</span></div><div><strong>↻</strong><span>' + (lang() === 'ar' ? 'محتوى يتجدد تلقائياً' : 'Automatically updated') + '</span></div></div>';
+    html += sectionsHtml('before');
     html += '<section class="grid-section">' +
       '<div class="section-head"><h2>' + t('homeGridTitle') + ' <span class="count-pill">' + list.length + '</span></h2></div>';
 
@@ -251,8 +252,24 @@
       html += '<div class="svc-grid">' + list.map(serviceCard).join('') + '</div>';
     }
 
-    html += '</section>';
+    html += '</section>' + sectionsHtml('after');
     return html;
+  }
+
+  function blockHtml(block) {
+    var text = (lang() === 'ar' ? block.text_ar : block.text_en) || block.text_ar || '';
+    var caption = (lang() === 'ar' ? block.caption_ar : block.caption_en) || block.caption_ar || '';
+    if (block.type === 'heading') return '<h2 class="section-title">' + escapeHtml(text) + '</h2>';
+    if (block.type === 'text') return '<div class="content-prose">' + buildRich(text).replace(/\n/g, '<br>') + '</div>';
+    if (block.type === 'callout') return '<aside class="content-callout">' + buildRich(text).replace(/\n/g, '<br>') + '</aside>';
+    if (block.type === 'image') return '<figure class="detail-figure"><img class="detail-img" data-expand-image="true" loading="lazy" src="' + escapeHtml(block.url) + '" alt="' + escapeHtml(caption) + '"><figcaption>' + escapeHtml(caption) + '</figcaption></figure>';
+    if (block.type === 'video') return videoHtml(block.url);
+    if (block.type === 'link') return '<a class="btn btn-outline" href="' + escapeHtml(block.url) + '" rel="noopener noreferrer">' + escapeHtml(text || block.url) + ' ↗</a>';
+    if (block.type === 'table') return '<div class="detail-table-wrap"><table class="detail-table">' + (block.rows || []).map(function(row,i){return '<tr>'+row.map(function(cell){return '<'+(i?'td':'th')+'>'+escapeHtml(cell)+'</'+(i?'td':'th')+'>';}).join('')+'</tr>';}).join('') + '</table></div>';
+    return '';
+  }
+  function sectionsHtml(position) {
+    return (window.SITE_CONTENT.sections || []).filter(function(s){return (s.position || 'before') === position;}).map(function(s){return '<section class="home-section"><div><span class="eyebrow">' + (lang() === 'ar' ? 'منصة المعرفة' : 'Knowledge hub') + '</span><h2>' + escapeHtml(L(s)) + '</h2><p>' + escapeHtml((lang() === 'ar' ? s.body_ar : s.body_en) || s.body_ar || '').replace(/\n/g,'<br>') + '</p>' + (s.url ? '<a class="btn btn-primary" href="' + escapeHtml(s.url) + '">' + (lang()==='ar'?'اكتشف المزيد':'Learn more') + ' ↗</a>' : '') + '</div>' + (s.image?'<img src="' + escapeHtml(s.image) + '" alt="" loading="lazy">':'') + '</section>';}).join('');
   }
 
   /* ---------- Service detail view ---------- */
@@ -272,17 +289,17 @@
 
     var html = '';
 
-    html += '<button class="btn btn-back" onclick="location.hash=\'#/\'">← ' + t('backHome') + '</button>';
+    html += '<a class="btn btn-back" href="#/">← ' + t('backHome') + '</a>';
 
     html += '<article class="detail" id="detail-article">';
 
     html += '<header class="detail-head">' +
-      '<span class="detail-icon">' + svc.icon + '</span>' +
+      '<span class="detail-icon">' + escapeHtml(svc.icon || '📄') + '</span>' +
       '<div>' +
         '<h1 class="detail-title' + (titleMatches ? ' match-target' : '') + '">' +
         (titleMatches ? highlight(L(svc), q) : escapeHtml(L(svc))) + '</h1>' +
         '<p class="detail-meta">' +
-          '<span class="meta-chip">' + catIcon(cat) + ' ' + catLabel(cat) + '</span>' +
+          '<span class="meta-chip">' + catIcon(cat) + ' ' + escapeHtml(catLabel(cat)) + '</span>' +
           (svc.time_ar ? '<span class="meta-chip">⏱ ' + (lang() === 'ar' ? svc.time_ar : (svc.time_en || svc.time_ar)) + '</span>' : '') +
           '<span class="meta-chip">👁 ' + views + ' ' + t('viewsLabel') + '</span>' +
         '</p>' +
@@ -316,7 +333,7 @@
     });
     function figureHtml(im) {
       return '<figure class="detail-figure">' +
-        '<img class="detail-img" src="' + escapeHtml(im.src) + '" loading="lazy" alt="' + escapeHtml(im.caption || '') + '" onclick="window.open(this.src)">' +
+        '<img class="detail-img" src="' + escapeHtml(im.src) + '" loading="lazy" alt="' + escapeHtml(im.caption || '') + '" data-expand-image="true">' +
         (im.caption ? '<figcaption>' + escapeHtml(im.caption) + '</figcaption>' : '') +
         '</figure>';
     }
@@ -390,6 +407,8 @@
       '</section>';
     }
 
+    if (svc.blocks && svc.blocks.length) html += '<section class="detail-section flexible-content">' + svc.blocks.map(blockHtml).join('') + '</section>';
+    html += '<div class="action-bar"><button class="btn btn-primary" id="printService">' + (lang() === 'ar' ? 'طباعة / حفظ PDF' : 'Print / Save PDF') + '</button><a class="btn btn-outline" href="#/">' + t('backHome') + '</a></div>';
     html += '</article>';
 
     // // Action bar
@@ -442,7 +461,7 @@
     var parts = h.split('/').filter(Boolean);
     if (parts.length === 0) return { name: 'home', q: q };
     if (parts[0] === 'service') {
-      return { name: 'service', slug: decodeURIComponent(parts.slice(1).join('/')) || parts[1], q: q };
+      return { name: 'service', slug: (function(){try{return decodeURIComponent(parts.slice(1).join('/'));}catch{return '';}})() || parts[1], q: q };
     }
     return { name: 'notfound' };
   }
@@ -454,6 +473,7 @@
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 
     if (route.name === 'home') {
+      lastViewed = null;
       content.innerHTML = homeView();
       title = (lang() === 'ar' ? 'الخدمات' : 'Services') + ' • MTN Syria';
     } else if (route.name === 'service') {
@@ -461,7 +481,7 @@
       if (!svc) {
         content.innerHTML = notFoundView();
       } else {
-        recordView(svc.id);
+        if (lastViewed !== svc.id) { recordView(svc.id); lastViewed = svc.id; }
         content.innerHTML = serviceView(svc, route.q);
         title = lang() === 'ar' ? svc.title_ar + ' • MTN Syria' : svc.title_en + ' • MTN Syria';
         if (route.q) {
@@ -481,6 +501,8 @@
     document.title = title;
 
     renderSidebar();
+    document.getElementById('heroSearch')?.addEventListener('click', function(){document.getElementById('searchToggle').click();});
+    document.getElementById('printService')?.addEventListener('click', function(){window.print();});
   }
 
   /* ---------- Search ---------- */
@@ -523,7 +545,7 @@
       { w: 75, v: normalizeAr(String(s.title_ar) + ' ' + String(s.title_en)) },   // العنوانان معاً
       { w: 45, v: normalizeAr(S(s)) },                                            // الملخص
       { w: 35, v: normalizeAr(catLabel(getCategory(s.category))) },               // اسم التصنيف
-      { w: 22, v: normalizeAr(D(s)) }                                             // الشرح الكامل
+      { w: 22, v: normalizeAr(D(s) + ' ' + Steps(s).join(' ') + ' ' + (s.blocks || []).map(function(b){return (b.text_ar || '')+' '+(b.text_en || '')+' '+(b.caption_ar || '')+' '+(b.rows || []).map(function(r){return r.join(' ');}).join(' ');}).join(' ')) }                                             // الشرح الكامل
     ];
     var total = 0;
     var covered = [];
@@ -609,8 +631,8 @@
 
     html += shown.map(function (r) {
       var s = r.s;
-      return '<a class="search-item" href="#/service/' + s.id + '?q=' + encodeURIComponent(q) + '">' +
-        '<span class="search-icon">' + s.icon + '</span>' +
+      return '<a class="search-item" href="#/service/' + encodeURIComponent(s.id) + '?q=' + encodeURIComponent(q) + '">' +
+        '<span class="search-icon">' + escapeHtml(s.icon || '📄') + '</span>' +
         '<div class="search-meta"><strong>' + highlight(L(s), q) + '</strong>' +
         '<small>' + highlight(S(s), q) + '</small></div>' +
         '<span class="search-cat">' + catLabel(getCategory(s.category)) + '</span>' +
@@ -703,7 +725,8 @@
       // language init is handled in i18n.js
     }
     document.documentElement.classList.add('js');
-    App.render();
+    if (SERVICES_DATA.length) App.render();
+    document.getElementById('appContent').addEventListener('click', function(e){if(e.target.matches('[data-expand-image]')){var d=document.getElementById('imageDialog');if(!d){d=document.createElement('dialog');d.id='imageDialog';d.className='image-dialog';var close=document.createElement('button');close.className='icon-btn';close.textContent='×';close.setAttribute('aria-label','إغلاق');close.onclick=function(){d.close();};d.append(close,document.createElement('img'));document.body.append(d);}d.querySelector('img').src=e.target.src;d.querySelector('img').alt=e.target.alt;d.showModal();}});
     document.getElementById('year').textContent = new Date().getFullYear();
   });
 

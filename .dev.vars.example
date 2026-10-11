@@ -1,0 +1,7 @@
+# Copy to .dev.vars for LOCAL DEVELOPMENT ONLY. Never publish AUTH_EMULATOR.
+FIREBASE_PROJECT_ID="demo-webtool"
+FIREBASE_API_KEY="demo-key"
+FIREBASE_APP_ID="1:123456:web:demo"
+FIREBASE_SENDER_ID="123456"
+ADMIN_UIDS="onboarding-admin"
+AUTH_EMULATOR="true"

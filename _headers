@@ -1,0 +1,7 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://fcmregistrations.googleapis.com http://127.0.0.1:9099; frame-src https://www.youtube-nocookie.com https://drive.google.com https://*.firebaseapp.com; media-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+/sw.js
+  Cache-Control: no-cache
