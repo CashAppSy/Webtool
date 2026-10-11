@@ -84,8 +84,8 @@ npm run deploy
 الملف المبني محليًا: `artifacts/MTN-Guide-debug.apk`، مع SHA-256 في الملف المجاور. هذه نسخة تجريبية موقعة بمفتاح Debug، قابلة للتثبيت المباشر، وليست إصدار متجر إنتاج.
 
 - Android 8.0 فأحدث؛ الهدف Android 15 / SDK 35.
-- عند أول تشغيل أدخل رابط HTTPS الرئيسي لموقع Cloudflare المنشور، مثل `https://webtool.your-account.workers.dev`.
-- زر «الرابط» يسمح بتغيير الموقع، و«↻» يعيد التحميل. الروابط الخارجية تُفتح عبر تطبيق مناسب.
+- يفتح التطبيق مباشرة `https://webtool.eng-ali-m-ibrahim.workers.dev` دون إدخال رابط. النسخة 1.0.1 (versionCode 2) تثبت الرابط وتزيل خيار تغييره؛ المستخدم يدخل باسم حسابه وكلمة المرور فقط.
+- زر «↻» يعيد التحميل. الروابط الخارجية تُفتح عبر تطبيق مناسب.
 - زر «إشعارات» يطلب إذن Android 13+ ويسجّل الجهاز بعد إعداد Firebase Android وAnonymous Auth في المشروع.
 - المحتوى يعرض نسخة الويب المتجاوبة داخل WebView، ويقرأ API نفسه. تصميم الموقع ومحتواه يتغيران تلقائيًا بعد نشرهما؛ تغييرات الأذونات أو الوظائف الأصلية تحتاج APK جديدًا.
 - المحتوى الذي حُمّل سابقًا متاح دون اتصال عبر Service Worker إذا كان إصدار Android System WebView يدعم ذلك. لا تُخزّن لوحة الإدارة وواجهاتها في ذاكرة Service Worker. لا يمكن سحب محتوى محفوظ سابقًا من جهاز غير متصل عن بُعد.
@@ -96,8 +96,7 @@ npm run deploy
 ```bash
 cd android
 ./gradlew assembleDebug
-# اختيارياً ضع رابطًا افتراضيًا بدل طلبه عند أول تشغيل:
-./gradlew assembleDebug -PsiteUrl=https://webtool.your-account.workers.dev
+# لتغيير نطاق الموقع مستقبلاً، عدّل DEFAULT_SITE_URL في app/build.gradle ثم أعد بناء APK.
 ```
 
 أنشئ `android/local.properties` بمتغير `sdk.dir=/path/to/android-sdk` عند الحاجة. إصدار المتجر يحتاج مفتاح توقيع Release خاص بك وإعداد signingConfig؛ احفظ المفتاح خارج المستودع. لم يُختبر APK على هاتف أو محاكي Android في هذه البيئة، ولم يُختبر تسليم FCM على جهاز حقيقي لعدم توفر مشروعك ورابط منشور.
