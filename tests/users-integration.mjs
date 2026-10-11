@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {chromium} from 'playwright-core';
-const origin='http://127.0.0.1:8787',admin=JSON.parse(fs.readFileSync('.runtime/test-auth.json'));const username='test-'+Date.now(),password='Test!'+crypto.randomUUID();
+const origin=process.env.TEST_ORIGIN||'http://127.0.0.1:8787',admin=JSON.parse(fs.readFileSync('.runtime/test-auth.json'));const username='test-'+Date.now(),password='Test!'+crypto.randomUUID();
 async function request(path,method='GET',value,token=admin.idToken){const r=await fetch(origin+path,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:value?JSON.stringify(value):undefined});return {status:r.status,data:await r.json()};}
 assert.equal((await request('/api/content','GET',undefined,null)).status,401);
 const created=await request('/api/admin/users','POST',{username,password,displayName:'مستخدم اختبار'});assert.equal(created.status,201,JSON.stringify(created.data));const uid=created.data.uid;

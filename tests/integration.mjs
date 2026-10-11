@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {chromium} from 'playwright-core';
-const origin='http://127.0.0.1:8787';const auth=JSON.parse(fs.readFileSync('.runtime/test-auth.json','utf8'));
+const origin=process.env.TEST_ORIGIN||'http://127.0.0.1:8787';const auth=JSON.parse(fs.readFileSync('.runtime/test-auth.json','utf8'));
 const headers={Authorization:'Bearer '+auth.idToken,'Content-Type':'application/json'};
 async function request(path,method='GET',value,rev){const response=await fetch(origin+path,{method,headers:{...headers,...(rev?{'If-Match':String(rev)}:{})},body:value?JSON.stringify(value):undefined});return {status:response.status,value:await response.json()};}
 let state=(await request('/api/admin/content')).value;assert.equal(state.services.length,68);let rev=state.revision;
