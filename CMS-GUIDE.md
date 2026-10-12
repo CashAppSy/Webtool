@@ -34,3 +34,9 @@ Delivery status shows registered devices and results. Firebase acceptance does n
 أقسام الصفحة تسمح بإضافة نصوص وصور وروابط وترتيبها وإخفائها. التصنيفات تنظم الخدمات؛ انقل الخدمات المرتبطة قبل حذف تصنيف. من إعدادات الموقع يمكنك تغيير العناوين وتنزيل نسخة احتياطية للمحتوى والصور. خذ نسخة قبل الاستيراد أو الحذف الكبير. الأدوات المتقدمة اختيارية ولا تحتاج استخدامها لإدارة المحتوى اليومي.
 
 Page sections support text, images, links, ordering and visibility. Categories organize services; move related services before deleting a category. Site settings let you change headings and download content backups. Keep a backup before imports or bulk deletion. Advanced tools are optional for everyday use.
+
+## القراءة دون إنترنت / Offline reading
+
+افتح الموقع أو التطبيق مع الإنترنت وسجّل الدخول، ثم اضغط «حفظ للقراءة دون إنترنت» وانتظر اكتمال تنزيل الصور. تُحفظ النصوص تلقائياً بعد تحميلها. بعد ذلك تستطيع قراءة النسخة المحفوظة دون اتصال حتى 7 أيام من آخر تحقق من الحساب؛ يتجدد التحقق عند الاتصال. الفيديو والصور الخارجية والتحديثات والدفع تحتاج اتصالاً. تسجيل الخروج يمسح النسخة المحلية.
+
+Sign in while online, then choose Save for offline reading and wait for image downloads. Text is saved automatically after loading. Saved content can be read offline for up to 7 days after account verification; connecting renews verification. Video, external images, updates and push need a connection. Signing out removes the local copy.

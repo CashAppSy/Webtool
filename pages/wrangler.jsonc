@@ -1,0 +1,29 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "training-hub",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "webtool-content",
+      "database_id": "6ed225d3-b22f-4598-b812-684ad8981211"
+    }
+  ],
+  "vars": {
+    "FIREBASE_PROJECT_ID": "webtool-73fbd",
+    "FIREBASE_API_KEY": "AIzaSyDMGAIrflrq8Gw6gKhoa75OuHsQ06vXd6k",
+    "FIREBASE_APP_ID": "1:494861665868:web:731639207a571864c2d6e9",
+    "FIREBASE_SENDER_ID": "494861665868",
+    "FIREBASE_VAPID_KEY": "BO2v7LtK-Rhz__hP0YldElcV6kIyPw00cPUG3Kqcl578KHUw30zaCou469CwSrCG1QZNGI2kcMm4Vwh1Uj40nzU",
+    "FIREBASE_ANDROID_APP_ID": "1:494861665868:android:ffb5f492be789a84c2d6e9",
+    "ADMIN_UIDS": "FoQADHoeFKfCKFAXu4FDV5UTVrJ2",
+    "REQUIRE_USER_LOGIN": "true"
+  },
+  "services": [
+    {
+      "binding": "BACKEND",
+      "service": "webtool"
+    }
+  ]
+}

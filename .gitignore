@@ -16,3 +16,7 @@ artifacts/
 firebase-debug.log
 ui-debug.log
 !.dev.vars.example
+
+pages/dist/
+pages/.wrangler/
+pages/.dev.vars

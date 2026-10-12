@@ -1,3 +1,7 @@
+# Cloudflare Pages وقراءة دون إنترنت
+
+مسار Pages جاهز في `pages/`، والتعليمات في [PAGES-SETUP.md](PAGES-SETUP.md). يعاد استخدام D1 وWorker الحالي عبر Service Binding، وتُحفظ نسخة القراءة دون اتصال للحساب الذي سجل الدخول. نشر مشروع Pages وتأكيد نطاقه يحتاج خطوة من حساب Cloudflare قبل تغيير رابط APK.
+
 # Training Hub
 
 منصة التدريب مع CMS عربي/إنجليزي، وضع داكن، حسابات ينشئها المدير، وإشعارات قابلة لإعادة الإرسال. افتح `/admin` لإدارة الموقع. ملفات Android في `downloads/Training-Hub.apk` و`downloads/Training-Hub-Update.apk`. دليل الاستخدام في [CMS-GUIDE.md](CMS-GUIDE.md)، وإعداد النشر والتوقيع في [DEPLOYMENT.md](DEPLOYMENT.md).
