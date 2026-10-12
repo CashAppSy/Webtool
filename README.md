@@ -1,3 +1,7 @@
+# Training Hub
+
+منصة التدريب مع CMS عربي/إنجليزي، وضع داكن، حسابات ينشئها المدير، وإشعارات قابلة لإعادة الإرسال. افتح `/admin` لإدارة الموقع. ملفات Android في `downloads/Training-Hub.apk` و`downloads/Training-Hub-Update.apk`. دليل الاستخدام في [CMS-GUIDE.md](CMS-GUIDE.md)، وإعداد النشر والتوقيع في [DEPLOYMENT.md](DEPLOYMENT.md).
+
 > **تحديث المنصة:** أصبح المشروع يتضمن CMS محمية بـFirebase، وAPI وقاعدة محتوى Cloudflare D1، وإشعارات دفع، ومشروع Android APK.
 > ابدأ من [دليل النشر والتشغيل](DEPLOYMENT.md) و[نتيجة مراجعة الموقع](REVIEW.md).
 > تعليمات الموقع الثابت أدناه تصف النسخة الأصلية ومصدر بيانات الاستيراد؛ تشغيل النسخة الحالية يكون عبر `npm run build` ثم `npm run db:init` و`npm run db:seed` و`npm run dev`.

@@ -6,9 +6,9 @@
 
   var TRANSLATIONS = {
     ar: {
-      brandTitle: 'كتيب الخدمات التدريبي',
-      brandSub: 'Syria',
-      ariaBrand: 'MTN Syria - الرئيسية',
+      brandTitle: 'Training Hub',
+      brandSub: 'Learn. Explore. Grow.',
+      ariaBrand: 'Training Hub - الرئيسية',
       ariaSearch: 'بحث',
       ariaTheme: 'تبديل الوضع الليلي',
       ariaClose: 'إغلاق',
@@ -47,9 +47,9 @@
       closeMenu: 'إغلاق القائمة'
     },
     en: {
-      brandTitle: 'Services Training Guide',
-      brandSub: 'Syria',
-      ariaBrand: 'MTN Syria - Home',
+      brandTitle: 'Training Hub',
+      brandSub: 'Learn. Explore. Grow.',
+      ariaBrand: 'Training Hub - Home',
       ariaSearch: 'Search',
       ariaTheme: 'Toggle dark mode',
       ariaClose: 'Close',
@@ -102,7 +102,7 @@
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-    document.title = (lang === 'ar' ? 'MTN Syria | كتيب الخدمات التدريبي' : 'MTN Syria | Training Services Guide');
+    document.title = (lang === 'ar' ? 'Training Hub | منصة التدريب' : 'Training Hub | Training Platform');
     applyStaticTranslations();
   }
 

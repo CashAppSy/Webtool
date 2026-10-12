@@ -1,1 +1,1 @@
-{"name":"MTN Syria · دليل الخدمات","short_name":"MTN Guide","lang":"ar","dir":"rtl","start_url":"/","display":"standalone","background_color":"#f5f6f8","theme_color":"#ffcb00","icons":[{"src":"/MTN_Logo.png","sizes":"any","type":"image/png","purpose":"any"}]}
+{"name": "Training Hub", "short_name": "Training Hub", "lang": "ar", "dir": "rtl", "start_url": "/", "display": "standalone", "background_color": "#f5f6f8", "theme_color": "#ffcb00", "icons": [{"src": "/training-hub.png", "sizes": "any", "type": "image/png", "purpose": "any"}]}

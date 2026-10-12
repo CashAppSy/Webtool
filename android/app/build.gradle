@@ -1,4 +1,6 @@
 plugins { id 'com.android.application' }
+def signingFile=rootProject.file('../.runtime/android-release-signing.json')
+def privateSigning=signingFile.exists()?new groovy.json.JsonSlurper().parse(signingFile):null
 android {
     namespace 'com.cashappsy.webtool'
     compileSdk 35
@@ -6,13 +8,14 @@ android {
         applicationId 'com.cashappsy.webtool'
         minSdk 26
         targetSdk 35
-        versionCode 4
-        versionName '1.0.3'
+        versionCode 5
+        versionName '1.1.0'
         buildConfigField 'String', 'DEFAULT_SITE_URL', '"' + 'https://webtool.eng-ali-m-ibrahim.workers.dev'.replace('"', '').replace('\\', '') + '"'
     }
     buildFeatures { buildConfig true }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
-    buildTypes { release { minifyEnabled false } }
+    signingConfigs { if(privateSigning) { hubRelease { storeFile file(privateSigning.storeFile); storePassword privateSigning.storePassword; keyAlias privateSigning.keyAlias; keyPassword privateSigning.keyPassword } } }
+    buildTypes { release { minifyEnabled false; if(privateSigning) signingConfig signingConfigs.hubRelease } }
 }
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:34.4.0')

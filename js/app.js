@@ -236,11 +236,11 @@
 
     var settings = window.SITE_CONTENT.settings || {};
     if (settings.heroEnabled !== false) html += '<section class="hero knowledge-hero">' +
-      '<div class="hero-copy"><span class="hero-label">MTN SYRIA · KNOWLEDGE HUB</span>' +
+      '<div class="hero-copy"><span class="hero-label">TRAINING HUB · LEARN & GROW</span>' +
       '<h1 class="hero-title">' + escapeHtml((lang() === 'ar' ? settings.title_ar : settings.title_en) || t('homePageTitle')) + '</h1>' +
       '<p class="hero-tagline">' + escapeHtml((lang() === 'ar' ? settings.subtitle_ar : settings.subtitle_en) || t('homeTagline')) + '</p>' +
       '<button class="hero-search" id="heroSearch">⌕ <span>' + t('searchPlaceholder') + '</span><kbd>Ctrl K</kbd></button></div>' +
-      '<div class="hero-motif" aria-hidden="true"><span>MTN</span><small>Learn. Explore. Grow.</small></div></section>';
+      '<div class="hero-motif" aria-hidden="true"><img src="/training-hub.png" alt="Training Hub"><small>Learn. Explore. Grow.</small></div></section>';
     html += '<div class="overview-stats"><div><strong>' + SERVICES_DATA.length + '</strong><span>' + (lang() === 'ar' ? 'خدمة في دليلك' : 'Services to explore') + '</span></div><div><strong>' + CATEGORIES.length + '</strong><span>' + (lang() === 'ar' ? 'تصنيفات منظمة' : 'Organized categories') + '</span></div><div><strong>↻</strong><span>' + (lang() === 'ar' ? 'محتوى يتجدد تلقائياً' : 'Automatically updated') + '</span></div></div>';
     html += sectionsHtml('before');
     html += '<section class="grid-section">' +
@@ -469,13 +469,13 @@
   function render() {
     var route = parseHash();
     var content = document.getElementById('appContent');
-    var title = (lang() === 'ar' ? 'MTN Syria | كتيب الخدمات التدريبي' : 'MTN Syria | Training Services Guide');
+    var title = (lang() === 'ar' ? 'Training Hub | منصة التدريب' : 'Training Hub | Training Platform');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 
     if (route.name === 'home') {
       lastViewed = null;
       content.innerHTML = homeView();
-      title = (lang() === 'ar' ? 'الخدمات' : 'Services') + ' • MTN Syria';
+      title = (lang() === 'ar' ? 'الخدمات' : 'Services') + ' • Training Hub';
     } else if (route.name === 'service') {
       var svc = getServiceBySlug(route.slug);
       if (!svc) {
@@ -483,7 +483,7 @@
       } else {
         if (lastViewed !== svc.id) { recordView(svc.id); lastViewed = svc.id; }
         content.innerHTML = serviceView(svc, route.q);
-        title = lang() === 'ar' ? svc.title_ar + ' • MTN Syria' : svc.title_en + ' • MTN Syria';
+        title = lang() === 'ar' ? svc.title_ar + ' • Training Hub' : svc.title_en + ' • Training Hub';
         if (route.q) {
           setTimeout(function () {
             var first = content.querySelector('.match-target');

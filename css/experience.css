@@ -40,3 +40,8 @@
  .android-app .site-footer{margin-top:28px}
 }
 @media(max-width:350px){.header-inner .brand{gap:4px}.brand-title{font-size:10px;max-width:82px}.header-actions .icon-btn{width:38px;min-width:38px}.container{padding-inline:12px}.hero-title{font-size:23px}}
+
+.hub-mark{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#ffcb00;color:#181b22;font:800 19px var(--font-en);flex-shrink:0}.member-account{display:flex;align-items:center;gap:8px}.account-dialog{width:min(440px,calc(100vw - 24px))}.account-details{display:grid;gap:12px;margin-top:20px}.account-details dt{font-size:12px;color:var(--text-muted)}.account-details dd{margin:4px 0 12px;font-size:16px;overflow-wrap:anywhere}@media(max-width:700px){.hub-mark{width:32px;height:32px;font-size:15px}.hero-search kbd{display:none}}
+
+.hub-icon{width:42px;height:42px;object-fit:contain;border-radius:12px;flex-shrink:0}.hero-motif{background:#001f25;transform:none;border-radius:24px;border:0;box-shadow:0 0 0 16px rgba(255,255,255,.12)}.hero-motif img{width:100%;height:100%;object-fit:contain;border-radius:24px}@media(max-width:700px){.hub-icon{width:32px;height:32px;border-radius:9px}}
+.connection-strip .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}.account-dialog .btn{margin-top:20px;min-height:44px}

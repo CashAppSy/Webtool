@@ -15,7 +15,8 @@
     "db:seed": "node scripts/seed.mjs && node scripts/wrangler.mjs d1 execute webtool-content --local --file .runtime/seed.sql",
     "deploy": "node scripts/wrangler.mjs deploy",
     "test:integration": "node tests/integration.mjs",
-    "test:users": "node tests/users-integration.mjs"
+    "test:users": "node tests/users-integration.mjs",
+    "test:cms": "node tests/cms-preferences.mjs"
   },
   "dependencies": {
     "@fontsource-variable/cairo": "^5.3.0",
