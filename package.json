@@ -19,7 +19,7 @@
     "test:cms": "node tests/cms-preferences.mjs",
     "build:pages": "node scripts/build-pages.mjs",
     "dev:pages": "node scripts/wrangler.mjs --pages-root pages dev dist",
-    "deploy:pages": "node scripts/wrangler.mjs --pages-root pages deploy dist --project-name training-hub",
+    "deploy:pages": "node scripts/wrangler.mjs --pages-root pages deploy dist --project-name webtool-821",
     "db:pages:init": "node scripts/wrangler.mjs --pages-root d1 execute webtool-content --local --file ../migrations/0001.sql && node scripts/wrangler.mjs --pages-root d1 execute webtool-content --local --file ../migrations/0002.sql",
     "db:pages:seed": "node scripts/seed.mjs && node scripts/wrangler.mjs --pages-root d1 execute webtool-content --local --file ../.runtime/seed.sql",
     "test:offline": "node tests/offline-pages.mjs"
