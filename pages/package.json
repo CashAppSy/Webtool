@@ -4,5 +4,8 @@
   "version": "1.0.0",
   "engines": {
     "node": ">=22.12"
+  },
+  "scripts": {
+    "build:pages": "npm ci --prefix .. && npm --prefix .. run build:pages"
   }
 }

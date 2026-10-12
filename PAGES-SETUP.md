@@ -15,7 +15,7 @@
 |---|---|
 | Framework preset | None |
 | Root directory | `pages` |
-| Build command | `npm ci --prefix .. && npm --prefix .. run build:pages` |
+| Build command | `npm run build:pages` |
 | Build output directory | `dist` |
 | Node version، إذا طُلب | `24` |
 
@@ -81,3 +81,7 @@ npm test
 عند تشغيل محاكي Auth محلياً، تنفذ عمليات Firebase محلياً دون تفويض الخدمة الإنتاجية. لا ترفع AUTH_EMULATOR أو صفحات .dev.vars إلى الإنتاج.
 
 بعد تأكيد الرابط، يستطيع المطور بناء Android باستخدام `-PsiteUrl=https://ACTUAL-PROJECT.pages.dev`. اسم الحزمة ومشروع Firebase والتوقيع تبقى نفسها. نسخة Release ونسخة Update تستخدمان توقيعين مختلفين كما هو موضح في DEPLOYMENT.md.
+
+## عند ظهور خطأ package-lock أو تحذير إعداد Wrangler
+
+إذا كان السجل يثبت اعتماديات الجذر (156 حزمة) ثم يقول إن إعداد Wrangler لا يحتوي pages_build_output_dir، فهذا يعني أن Root directory لم يُضبط على pages. من Settings → Builds & deployments → Build configuration → Edit اضبط Root directory على pages، وأمر البناء npm run build:pages، ومجلد الإخراج dist. احفظ الإعدادات ثم أنشئ نشرًا جديدًا من أحدث main؛ إعادة محاولة النشر القديم قد تستخدم الإعدادات القديمة.
