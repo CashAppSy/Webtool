@@ -42,7 +42,7 @@
 
 افتح رابط Pages الناتج، ثم `/admin`. الحسابات وكلمات المرور نفسها. قد تحتاج الدخول مرة أخرى لأن جلسة المتصفح مرتبطة بالنطاق السابق. جرّب إنشاء مستخدم، تعديل خدمة، وإرسال إشعار جديد ثم إعادة إرساله.
 
-أرسل رابط Pages الحقيقي بعد نجاحه. لا نضع نطاقاً غير مؤكد في APK؛ قد يكون الاسم مستخدماً من حساب آخر. الرابط المؤكد هو https://webtool-821.pages.dev؛ الإصدار 1.2.1 من التطبيق يستخدم هذا الرابط دون إدخال يدوي.
+أرسل رابط Pages الحقيقي بعد نجاحه. لا نضع نطاقاً غير مؤكد في APK؛ قد يكون الاسم مستخدماً من حساب آخر. الرابط المؤكد هو https://training--hub.pages.dev؛ الإصدار 1.2.1 من التطبيق يستخدم هذا الرابط دون إدخال يدوي.
 
 ## العمل دون إنترنت
 
@@ -88,6 +88,6 @@ npm test
 
 ## الرابط المعتمد
 
-الموقع: https://webtool-821.pages.dev
-لوحة الإدارة: https://webtool-821.pages.dev/admin
-اسم مشروع Pages في Wrangler: webtool-821. أضف webtool-821.pages.dev إلى Authorized domains في Firebase.
+الموقع: https://training--hub.pages.dev
+لوحة الإدارة: https://training--hub.pages.dev/admin
+اسم مشروع Pages في Wrangler: training--hub. أضف training--hub.pages.dev إلى Authorized domains في Firebase.

@@ -240,7 +240,7 @@
       '<h1 class="hero-title">' + escapeHtml((lang() === 'ar' ? settings.title_ar : settings.title_en) || t('homePageTitle')) + '</h1>' +
       '<p class="hero-tagline">' + escapeHtml((lang() === 'ar' ? settings.subtitle_ar : settings.subtitle_en) || t('homeTagline')) + '</p>' +
       '<button class="hero-search" id="heroSearch">⌕ <span>' + t('searchPlaceholder') + '</span><kbd>Ctrl K</kbd></button></div>' +
-      '<div class="hero-motif" aria-hidden="true"><img src="/training-hub.png" alt="Training Hub"><small>Learn. Explore. Grow.</small></div></section>';
+      '<div class="hero-motif" aria-hidden="true"><img src="/training-hub.png" alt="Training Hub"></div></section>';
     html += '<div class="overview-stats"><div><strong>' + SERVICES_DATA.length + '</strong><span>' + (lang() === 'ar' ? 'خدمة في دليلك' : 'Services to explore') + '</span></div><div><strong>' + CATEGORIES.length + '</strong><span>' + (lang() === 'ar' ? 'تصنيفات منظمة' : 'Organized categories') + '</span></div><div><strong>↻</strong><span>' + (lang() === 'ar' ? 'محتوى يتجدد تلقائياً' : 'Automatically updated') + '</span></div></div>';
     html += sectionsHtml('before');
     html += '<section class="grid-section">' +

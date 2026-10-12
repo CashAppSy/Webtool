@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
-  "name": "webtool-821",
+  "name": "training--hub",
   "pages_build_output_dir": "./dist",
   "compatibility_date": "2026-10-01",
   "d1_databases": [
